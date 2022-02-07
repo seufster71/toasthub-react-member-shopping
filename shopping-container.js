@@ -2,45 +2,30 @@
 * Author Edward Seufert
 */
 'use-strict';
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import * as appPrefActions from '../../core/common/apppref-actions';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, useLocation } from "react-router-dom";
+// import * as actions from '../../core/common/apppref-actions';
 import fuLogger from '../../core/common/fu-logger';
 import ShoppingView from '../../memberView/shopping/shopping-view';
 
 
-class ShoppingContainer extends Component {
-	constructor(props) {
-		super(props);
+function ShoppingContainer() {
+	const itemState = useSelector((state) => state.shopping);
+	const session = useSelector((state) => state.session);
+	const appPrefs = useSelector((state) => state.appPrefs);
+	const dispatch = useDispatch();
+	const location = useLocation();
+	const navigate = useNavigate();
 
-	}
+	useEffect(() => {
+		// dispatch(actions.init());
+	}, []);
 
-	componentDidMount() {
-		//this.props.actions.initMember();
-	}
-
-  render() {
-			fuLogger.log({level:'TRACE',loc:'ShoppingContainer::render',msg:"Hi there"});
-      return (
-				<ShoppingView/>
-			);
-  }
+	fuLogger.log({level:'TRACE',loc:'ShoppingContainer::render',msg:"Hi there"});
+    return (
+		<ShoppingView/>
+	);
 }
 
-ShoppingContainer.propTypes = {
-	appPrefs: PropTypes.object,
-	lang: PropTypes.string,
-	actions: PropTypes.object
-};
-
-function mapStateToProps(state, ownProps) {
-  return {lang:state.lang, appPrefs:state.appPrefs};
-}
-
-function mapDispatchToProps(dispatch) {
-  return { actions:bindActionCreators(appPrefActions,dispatch) };
-}
-
-export default connect(mapStateToProps,mapDispatchToProps)(ShoppingContainer);
+export default ShoppingContainer;
